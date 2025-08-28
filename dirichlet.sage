@@ -69,7 +69,7 @@ def local_average_plots(func, X, delta, y_max, y_div):
     return local_avg_plots, local_smooth_avg_plots
 
 
-def P_quad(p, X, phi, start=1.0, end=2.0):
+def P_kronecker(p, X, phi, start=1.0, end=2.0):
     # Equation (1.5) when \Phi(x) = characteristic function of [start, end]
     # or smooth function supported on [start, end]
     P = 0.0
@@ -206,24 +206,24 @@ def fig23(X=2^16, delta=2/3):
         else:
             phi_cache[(phi_minus, d / X)] = phi_minus.subs(x = d / X)
 
-    P_quad_plus_pts, P_quad_smooth_plus_pts = local_average_plots(
-        lambda p: P_quad(p, X=X, phi=phi_plus, start=start_plus, end=end_plus), X=X, delta=delta, y_max=y_max, y_div=y_div
+    P_kronecker_plus_pts, P_kronecker_smooth_plus_pts = local_average_plots(
+        lambda p: P_kronecker(p, X=X, phi=phi_plus, start=start_plus, end=end_plus), X=X, delta=delta, y_max=y_max, y_div=y_div
     )
-    P_quad_minus_pts, P_quad_smooth_minus_pts = local_average_plots(
-        lambda p: P_quad(p, X=X, phi=phi_minus, start=start_minus, end=end_minus), X=X, delta=delta, y_max=y_max, y_div=y_div
+    P_kronecker_minus_pts, P_kronecker_smooth_minus_pts = local_average_plots(
+        lambda p: P_kronecker(p, X=X, phi=phi_minus, start=start_minus, end=end_minus), X=X, delta=delta, y_max=y_max, y_div=y_div
     )
 
-    P_quad_smooth_density_plus_pts = []
-    P_quad_smooth_density_minus_pts = []
+    P_kronecker_smooth_density_plus_pts = []
+    P_kronecker_smooth_density_minus_pts = []
     for y in tqdm(y_pts, desc="M_density computation"):
-        P_quad_smooth_density_plus_pts.append(M_density(y, start_plus, end_plus, phi_plus))
-        P_quad_smooth_density_minus_pts.append(M_density(y, start_minus, end_minus, phi_minus))
+        P_kronecker_smooth_density_plus_pts.append(M_density(y, start_plus, end_plus, phi_plus))
+        P_kronecker_smooth_density_minus_pts.append(M_density(y, start_minus, end_minus, phi_minus))
 
-    P_quad_smooth_density_plus_plot = plt.plot(y_pts, P_quad_smooth_density_plus_pts, color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
-    P_quad_smooth_density_minus_plot = plt.plot(y_pts, P_quad_smooth_density_minus_pts, color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
+    P_kronecker_smooth_density_plus_plot = plt.plot(y_pts, P_kronecker_smooth_density_plus_pts, color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
+    P_kronecker_smooth_density_minus_plot = plt.plot(y_pts, P_kronecker_smooth_density_minus_pts, color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
 
-    P_quad_smooth_plus_scatter = plt.scatter(y_pts, P_quad_smooth_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
-    P_quad_smooth_minus_scatter = plt.scatter(y_pts, P_quad_smooth_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
+    P_kronecker_smooth_plus_scatter = plt.scatter(y_pts, P_kronecker_smooth_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
+    P_kronecker_smooth_minus_scatter = plt.scatter(y_pts, P_kronecker_smooth_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
@@ -233,11 +233,11 @@ def fig23(X=2^16, delta=2/3):
     print("Figure 3")
     plt.subplots(figsize=(12, 6))
 
-    P_quad_density_plus_plot = plt.plot(y_pts, [M_density_char(y, start_plus, end_plus) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
-    P_quad_density_minus_plot = plt.plot(y_pts, [M_density_char(y, start_minus, end_minus) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
+    P_kronecker_density_plus_plot = plt.plot(y_pts, [M_density_char(y, start_plus, end_plus) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
+    P_kronecker_density_minus_plot = plt.plot(y_pts, [M_density_char(y, start_minus, end_minus) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
 
-    P_quad_plus_scatter = plt.scatter(y_pts, P_quad_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
-    P_quad_minus_scatter = plt.scatter(y_pts, P_quad_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
+    P_kronecker_plus_scatter = plt.scatter(y_pts, P_kronecker_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
+    P_kronecker_minus_scatter = plt.scatter(y_pts, P_kronecker_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
@@ -245,7 +245,24 @@ def fig23(X=2^16, delta=2/3):
     plt.close()
 
 
+def fig4(X=2^17, c=2):
+    # All quadratic characters, noisy image
+    print("Figure 4")
+    plt.subplots(figsize=(12, 6))
+
+    p_max = 4 * X
+    p_pts = [p for p in prime_range(1, p_max)]
+    P_pts = [P_quad(p, X=X, c=c) for p in p_pts]
+    P_even_scatter = plt.scatter(p_pts, [P[0] for P in P_pts], color='blue', label=rf'$P_{{+}}(p, {X}, {c})$', s=1)
+    P_odd_scatter = plt.scatter(p_pts, [P[1] for P in P_pts], color='red', label=rf'$P_{{-}}(p, {X}, {c})$', s=1)
+
+    plt.legend(loc='upper right')
+    plt.axhline(0, xmax=p_max, color='black', linewidth=1)
+    plt.savefig(f"./plots/dirichlet/fig4_X={X}_c={float(c)}.png")
+    plt.close()
+
+
 if __name__ == "__main__":
     fig1_top()
     fig1_bottom()
-    # fig23(X=2^16)
+    fig23(X=2^16)  # Original plot uses X = 2^19, but it may take more than a day with current implementation (on a macbook)

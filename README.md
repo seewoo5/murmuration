@@ -20,7 +20,9 @@ exit
 
 ## Dirichlet character
 
-Lee-Oliver-Podznyakov, "Murmuration of Dirichlet Characters"
+Lee-Oliver-Podznyakov, "Murmuration of Dirichlet Characters", IMRN 2025
+
+Reproduce Figure 1, 2, and 3.
 
 ```
 sage dirichlet.sage
