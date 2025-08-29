@@ -245,23 +245,6 @@ def fig23(X=2^16, delta=2/3):
     plt.close()
 
 
-def fig4(X=2^17, c=2):
-    # All quadratic characters, noisy image
-    print("Figure 4")
-    plt.subplots(figsize=(12, 6))
-
-    p_max = 4 * X
-    p_pts = [p for p in prime_range(1, p_max)]
-    P_pts = [P_quad(p, X=X, c=c) for p in p_pts]
-    P_even_scatter = plt.scatter(p_pts, [P[0] for P in P_pts], color='blue', label=rf'$P_{{+}}(p, {X}, {c})$', s=1)
-    P_odd_scatter = plt.scatter(p_pts, [P[1] for P in P_pts], color='red', label=rf'$P_{{-}}(p, {X}, {c})$', s=1)
-
-    plt.legend(loc='upper right')
-    plt.axhline(0, xmax=p_max, color='black', linewidth=1)
-    plt.savefig(f"./plots/dirichlet/fig4_X={X}_c={float(c)}.png")
-    plt.close()
-
-
 if __name__ == "__main__":
     fig1_top()
     fig1_bottom()
