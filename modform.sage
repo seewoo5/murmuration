@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 
 alpha = float(2 * pi)
@@ -47,6 +48,58 @@ def dyadic_func(y):
         raise ValueError("Invalid input")
 
 
+def modform_avg(ps, X, c, k=2, sqfree=True):
+    avgs_even = [0] * len(ps)
+    avgs_odd = [0] * len(ps)
+    avgs = [0] * len(ps)
+    cnt_even = 0
+    cnt_odd = 0
+    cnt = 0
+    for N in tqdm(srange(X, int(c * X) + 1)):
+        if sqfree and not N.is_squarefree():
+            continue
+        V = Newforms(N, k, names='a')
+        for f in V:  # enumerate galois orbits of newforms
+            eps = QQ(f.atkin_lehner_eigenvalue()) * (-1)^(k/2)
+            for i, p in enumerate(ps):
+                ap_tr = f.coefficient(p).trace()
+                avgs[i] += eps * ap_tr / p^(k/2 - 1)
+                if eps == 1:
+                    avgs_even[i] += ap_tr / p^(k/2 - 1)
+                    cnt_even += 1
+                else:
+                    avgs_odd[i] += ap_tr / p^(k/2 - 1)
+                    cnt_odd += 1
+            cnt += 1
+    for i in range(len(ps)):
+        avgs[i] /= cnt
+        avgs_even[i] /= cnt_even
+        avgs_odd[i] /= cnt_odd
+    return avgs, avgs_even, avgs_odd
+
+
+def fig2(k=2, X=2^8, c=2, sqfree=True):
+    # Plot of murmuration with (square-free) conductors on geometric intervals
+    if sqfree:
+        print(f"Figure 2: Plot of murmuration with square-free conductors in [{X}, {c * X}] for k = {k}")
+    else:
+        print(f"Figure 2: Plot of murmuration with conductors in [{X}, {c * X}] for k = {k}")
+    plt.subplots(figsize=(15, 2))
+
+    y_max = 1.0
+    ps = [p for p in prime_range(2, int(y_max * X))]
+    ys = [p / X * y_max for p in ps]
+    avgs, avgs_even, avgs_odd = modform_avg(ps, X, c, sqfree=sqfree)
+
+    plt.scatter(ys, avgs_even, color='blue', s=1)
+    plt.scatter(ys, avgs_odd, color='red', s=1)
+    plt.axhline(0, xmax=y_max, color='black', linewidth=1)
+    if sqfree:
+        plt.savefig(f"./plots/modform/fig2_k={k}_X={X}_sqfree.png")
+    else:
+        plt.savefig(f"./plots/modform/fig2_k={k}_X={X}.png")
+
+
 def fig3(k=8):
     # Plot of Mk
     print(f"Figure 3: Plot of Mk for k = {k}")
@@ -82,6 +135,7 @@ def fig4():
 
 
 if __name__ == "__main__":
-    # fig3(k=8)
-    # fig3(k=24)
+    fig2(k=2, X=2^10, sqfree=False)  # This may take more than 10hrs with a macbook
+    fig3(k=8)
+    fig3(k=24)
     fig4()
