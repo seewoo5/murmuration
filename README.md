@@ -29,3 +29,11 @@ sage dirichlet.sage
 ```
 
 The generated plots will be saved under the directory `plots/dirichlet`.
+
+## Modular form
+
+Zubrilina, "Murmuration", Inventiones 2025
+
+```
+sage modform.sage
+```
