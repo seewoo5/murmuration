@@ -61,16 +61,17 @@ def modform_avg(ps, X, c, k=2, sqfree=True):
         V = Newforms(N, k, names='a')
         for f in V:  # enumerate galois orbits of newforms
             eps = QQ(f.atkin_lehner_eigenvalue()) * (-1)^(k/2)
+            d = f.coefficient(1).parent().degree()
             for i, p in enumerate(ps):
                 ap_tr = f.coefficient(p).trace()
                 avgs[i] += eps * ap_tr / p^(k/2 - 1)
                 if eps == 1:
                     avgs_even[i] += ap_tr / p^(k/2 - 1)
-                    cnt_even += 1
+                    cnt_even += d
                 else:
                     avgs_odd[i] += ap_tr / p^(k/2 - 1)
-                    cnt_odd += 1
-            cnt += 1
+                    cnt_odd += d
+            cnt += d
     for i in range(len(ps)):
         avgs[i] /= cnt
         avgs_even[i] /= cnt_even
@@ -97,7 +98,7 @@ def fig2(k=2, X=2^8, c=2, sqfree=True):
     if sqfree:
         plt.savefig(f"./plots/modform/fig2_k={k}_X={X}_sqfree.png")
     else:
-        plt.savefig(f"./plots/modform/fig2_k={k}_X={X}.png")
+        plt.savefig(f"./plots/modform/fig2_k={k}_X={X}_all.png")
 
 
 def fig3(k=8):
@@ -135,7 +136,7 @@ def fig4():
 
 
 if __name__ == "__main__":
-    fig2(k=2, X=2^10, sqfree=False)  # This may take more than 10hrs with a macbook
+    fig2(k=2, X=2^9, sqfree=False)  # X=2^10 may take more than 10hrs within a macbook
     fig3(k=8)
     fig3(k=24)
     fig4()
