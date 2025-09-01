@@ -67,10 +67,12 @@ def modform_avg(ps, X, c, k=2, sqfree=True):
                 avgs[i] += eps * ap_tr / p^(k/2 - 1)
                 if eps == 1:
                     avgs_even[i] += ap_tr / p^(k/2 - 1)
-                    cnt_even += d
+                    if i == 0:
+                        cnt_even += d
                 else:
                     avgs_odd[i] += ap_tr / p^(k/2 - 1)
-                    cnt_odd += d
+                    if i == 0:
+                        cnt_odd += d
             cnt += d
     for i in range(len(ps)):
         avgs[i] /= cnt
@@ -110,7 +112,7 @@ def fig3(k=8):
     y_div = 100
     y_pts = [i / y_div for i in range(int(y_max * y_div))]
     Mk_pts = [Mk(y, k=k) for y in y_pts]
-    plt.plot(y_pts, Mk_pts, color='blue', label=rf'$M_{k}(y)$')
+    plt.plot(y_pts, Mk_pts, color='blue', label=rf'$M_{{{k}}}(y)$')
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
