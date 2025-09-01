@@ -97,10 +97,11 @@ def fig1():
 def ec_murmuration_dyadic(X, y_max=1.0):
     # Reproduce Sutherland's computation
     # We assume parity conjecture and compute root number as (-1)^r
-    print(f"Murmuration of elliptic curves of conductor in ({X}, {2*X}]")
+    # Non-CM only
+    print(f"Murmuration of elliptic curves of conductor in [{X}, {2*X})")
     plt.subplots(figsize=(24, 6))
 
-    data = list(query_data(X+1, 2*X))
+    data = list(query_data(X, 2*X-1))
     isog_labels = set()
     np = prime_pi(int(X * y_max))
     avgs_even = vector([0] * np)
@@ -109,6 +110,8 @@ def ec_murmuration_dyadic(X, y_max=1.0):
     cnt_odd = 0
     for ec in tqdm(data):
         if ec['lmfdb_iso'] in isog_labels:
+            continue
+        if ec['cm'] != 0:  # Non-CM only
             continue
         isog_labels.add(ec['lmfdb_iso'])
         ec_sage = EllipticCurve(QQ, ec['ainvs'])
@@ -133,4 +136,8 @@ def ec_murmuration_dyadic(X, y_max=1.0):
 
 if __name__ == "__main__":
     fig1()
+    ec_murmuration_dyadic(2^12)
+    ec_murmuration_dyadic(2^13)
+    ec_murmuration_dyadic(2^14)
+    ec_murmuration_dyadic(2^15)
     # ec_murmuration_dyadic(2^16)  # about 4 hours with a macbook
