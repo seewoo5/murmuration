@@ -139,6 +139,7 @@ def fig4():
 
 if __name__ == "__main__":
     fig2(k=2, X=2^9, sqfree=False)  # X=2^10 may take more than 10hrs within a macbook
+    fig3(k=2)
     fig3(k=8)
     fig3(k=24)
     fig4()

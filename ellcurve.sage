@@ -140,4 +140,4 @@ if __name__ == "__main__":
     ec_murmuration_dyadic(2^13)
     ec_murmuration_dyadic(2^14)
     ec_murmuration_dyadic(2^15)
-    # ec_murmuration_dyadic(2^16)  # about 4 hours with a macbook
+    ec_murmuration_dyadic(2^16)  # about 4 hours with a macbook
