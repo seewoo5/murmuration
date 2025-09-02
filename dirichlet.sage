@@ -219,11 +219,11 @@ def fig23(X=2^16, delta=2/3):
         P_kronecker_smooth_density_plus_pts.append(M_density(y, start_plus, end_plus, phi_plus))
         P_kronecker_smooth_density_minus_pts.append(M_density(y, start_minus, end_minus, phi_minus))
 
-    P_kronecker_smooth_density_plus_plot = plt.plot(y_pts, P_kronecker_smooth_density_plus_pts, color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
-    P_kronecker_smooth_density_minus_plot = plt.plot(y_pts, P_kronecker_smooth_density_minus_pts, color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
+    plt.plot(y_pts, P_kronecker_smooth_density_plus_pts, color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
+    plt.plot(y_pts, P_kronecker_smooth_density_minus_pts, color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
 
-    P_kronecker_smooth_plus_scatter = plt.scatter(y_pts, P_kronecker_smooth_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
-    P_kronecker_smooth_minus_scatter = plt.scatter(y_pts, P_kronecker_smooth_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
+    plt.scatter(y_pts, P_kronecker_smooth_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X})$', s=1)
+    plt.scatter(y_pts, P_kronecker_smooth_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
@@ -233,11 +233,11 @@ def fig23(X=2^16, delta=2/3):
     print("Figure 3")
     plt.subplots(figsize=(12, 6))
 
-    P_kronecker_density_plus_plot = plt.plot(y_pts, [M_density_char(y, start_plus, end_plus) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
-    P_kronecker_density_minus_plot = plt.plot(y_pts, [M_density_char(y, start_minus, end_minus) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
+    plt.plot(y_pts, [M_density_char(y, start_plus, end_plus) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
+    plt.plot(y_pts, [M_density_char(y, start_minus, end_minus) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
 
-    P_kronecker_plus_scatter = plt.scatter(y_pts, P_kronecker_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
-    P_kronecker_minus_scatter = plt.scatter(y_pts, P_kronecker_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
+    plt.scatter(y_pts, P_kronecker_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
+    plt.scatter(y_pts, P_kronecker_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
