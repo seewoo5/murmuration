@@ -139,11 +139,11 @@ def fig1_top(X=2^10, c=2):
 
     P_density_even_func = lambda y: quad(lambda x: np.cos(2 * np.pi * y / x), 1, c)[0]
     P_density_odd_func = lambda y: -quad(lambda x: np.sin(2 * np.pi * y / x), 1, c)[0]
-    P_density_even_plot = plt.plot(y_pts, [P_density_even_func(y) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} P_{{+}}(y, X, {c})$')
-    P_density_odd_plot = plt.plot(y_pts, [P_density_odd_func(y) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} P_{{-}}(y, X, {c})$')
+    plt.plot(y_pts, [P_density_even_func(y) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} P_{{+}}(y, X, {c})$')
+    plt.plot(y_pts, [P_density_odd_func(y) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} P_{{-}}(y, X, {c})$')
 
-    P_even_scatter = plt.scatter(y_pts, [p[0] for p in P_pts], color='blue', label=rf'$P_{{+}}(y, {X}, {c})$', s=1)
-    P_odd_scatter = plt.scatter(y_pts, [p[1] for p in P_pts], color='red', label=rf'$P_{{-}}(y, {X}, {c})$', s=1)
+    plt.scatter(y_pts, [p[0] for p in P_pts], color='blue', label=rf'$P_{{+}}(y, {X}, {c})$', s=1)
+    plt.scatter(y_pts, [p[1] for p in P_pts], color='red', label=rf'$P_{{-}}(y, {X}, {c})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
@@ -162,11 +162,11 @@ def fig1_bottom(X=2002, delta=0.51):
 
     P_tilde_density_even_func = lambda y: np.cos(2 * pi * y)
     P_tilde_density_odd_func = lambda y: -np.sin(2 * pi * y)
-    P_tilde_density_even_plot = plt.plot(y_pts, [P_tilde_density_even_func(y) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} \widetilde{{P}}_{{+}}(y, X, {delta:.2f})$')
-    P_tilde_density_odd_plot = plt.plot(y_pts, [P_tilde_density_odd_func(y) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} \widetilde{{P}}_{{-}}(y, X, {delta:.2f})$')
+    plt.plot(y_pts, [P_tilde_density_even_func(y) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} \widetilde{{P}}_{{+}}(y, X, {delta:.2f})$')
+    plt.plot(y_pts, [P_tilde_density_odd_func(y) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} \widetilde{{P}}_{{-}}(y, X, {delta:.2f})$')
 
-    P_tilde_even_scatter = plt.scatter(y_pts, [p[0] for p in P_tilde_pts], color='blue', label=rf'$\widetilde{{P}}_{{+}}(y, {X}, {delta:.2f})$', s=1)
-    P_tilde_odd_scatter = plt.scatter(y_pts, [p[1] for p in P_tilde_pts], color='red', label=rf'$\widetilde{{P}}_{{-}}(y, {X}, {delta:.2f})$', s=1)
+    plt.scatter(y_pts, [p[0] for p in P_tilde_pts], color='blue', label=rf'$\widetilde{{P}}_{{+}}(y, {X}, {delta:.2f})$', s=1)
+    plt.scatter(y_pts, [p[1] for p in P_tilde_pts], color='red', label=rf'$\widetilde{{P}}_{{-}}(y, {X}, {delta:.2f})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
@@ -219,11 +219,11 @@ def fig23(X=2^16, delta=2/3):
         P_kronecker_smooth_density_plus_pts.append(M_density(y, start_plus, end_plus, phi_plus))
         P_kronecker_smooth_density_minus_pts.append(M_density(y, start_minus, end_minus, phi_minus))
 
-    P_kronecker_smooth_density_plus_plot = plt.plot(y_pts, P_kronecker_smooth_density_plus_pts, color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
-    P_kronecker_smooth_density_minus_plot = plt.plot(y_pts, P_kronecker_smooth_density_minus_pts, color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
+    plt.plot(y_pts, P_kronecker_smooth_density_plus_pts, color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
+    plt.plot(y_pts, P_kronecker_smooth_density_minus_pts, color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
 
-    P_kronecker_smooth_plus_scatter = plt.scatter(y_pts, P_kronecker_smooth_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
-    P_kronecker_smooth_minus_scatter = plt.scatter(y_pts, P_kronecker_smooth_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
+    plt.scatter(y_pts, P_kronecker_smooth_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X})$', s=1)
+    plt.scatter(y_pts, P_kronecker_smooth_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
@@ -233,11 +233,11 @@ def fig23(X=2^16, delta=2/3):
     print("Figure 3")
     plt.subplots(figsize=(12, 6))
 
-    P_kronecker_density_plus_plot = plt.plot(y_pts, [M_density_char(y, start_plus, end_plus) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
-    P_kronecker_density_minus_plot = plt.plot(y_pts, [M_density_char(y, start_minus, end_minus) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
+    plt.plot(y_pts, [M_density_char(y, start_plus, end_plus) for y in y_pts], color='green', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_+}}(y, X, {delta})$')
+    plt.plot(y_pts, [M_density_char(y, start_minus, end_minus) for y in y_pts], color='orange', label=rf'$\lim_{{X \to \infty}} M_{{\Phi_-}}(y, X, {delta})$')
 
-    P_kronecker_plus_scatter = plt.scatter(y_pts, P_kronecker_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
-    P_kronecker_minus_scatter = plt.scatter(y_pts, P_kronecker_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
+    plt.scatter(y_pts, P_kronecker_plus_pts, color='blue', label=rf'$M_{{\Phi_+}}(y, {X}, {delta})$', s=1)
+    plt.scatter(y_pts, P_kronecker_minus_pts, color='red', label=rf'$M_{{\Phi_-}}(y, {X}, {delta})$', s=1)
 
     plt.legend(loc='upper right')
     plt.axhline(0, xmax=y_max, color='black', linewidth=1)
