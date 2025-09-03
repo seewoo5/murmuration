@@ -202,14 +202,14 @@ def ec_with_local_avg(X, y_max=1.0, gammas=[1/5]):
 
 
 if __name__ == "__main__":
-    # fig1()
-    # ec_murmuration_dyadic(2^12)
-    # ec_murmuration_dyadic(2^13)
-    # ec_murmuration_dyadic(2^14)
-    # ec_murmuration_dyadic(2^15)
-    # ec_murmuration_dyadic(2^16)  # about 4 hours with a macbook
-    # ec_with_local_avg(2^12, gammas=[1/5, 1/4, 1/3, 1/2])
-    # ec_with_local_avg(2^13, gammas=[1/5, 1/4, 1/3, 1/2])
-    # ec_with_local_avg(2^14, gammas=[1/5, 1/4, 1/3, 1/2])
-    # ec_with_local_avg(2^15, gammas=[1/5, 1/4, 1/3, 1/2])
+    fig1()
+    ec_murmuration_dyadic(2^12)
+    ec_murmuration_dyadic(2^13)
+    ec_murmuration_dyadic(2^14)
+    ec_murmuration_dyadic(2^15)
+    ec_murmuration_dyadic(2^16)  # about 4 hours with a macbook
+    ec_with_local_avg(2^12, gammas=[1/5, 1/4, 1/3, 1/2])
+    ec_with_local_avg(2^13, gammas=[1/5, 1/4, 1/3, 1/2])
+    ec_with_local_avg(2^14, gammas=[1/5, 1/4, 1/3, 1/2])
+    ec_with_local_avg(2^15, gammas=[1/5, 1/4, 1/3, 1/2])
     ec_with_local_avg(2^16, gammas=[1/5, 1/4, 1/3, 1/2])
