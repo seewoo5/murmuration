@@ -134,6 +134,73 @@ def ec_murmuration_dyadic(X, y_max=1.0):
     plt.close()
 
 
+def ec_with_local_avg(X, y_max=1.0, gammas=[1/5]):
+    # With X^gamma of local averaging
+
+    data = list(query_data(X, 2*X-1))
+    max_gamma = max(gammas)
+    print(f"Murmuration of elliptic curves of conductor in [{X}, {2*X}) with local averaging, gamma={gammas}")
+
+    isog_labels = set()
+    pmax = next_prime(int(X * y_max))
+    pmax_more = next_prime(int(X * y_max + X^max_gamma) + 1)
+    np = prime_pi(pmax)
+    np_more = prime_pi(pmax_more)
+    avgs = vector([0] * np_more)
+
+    for ec in tqdm(data):
+        if ec['lmfdb_iso'] in isog_labels:
+            continue
+        if ec['cm'] != 0:
+            continue
+        isog_labels.add(ec['lmfdb_iso'])
+        ec_sage = EllipticCurve(QQ, ec['ainvs'])
+        if ec['rank'] % 2 == 0:
+            avgs += vector(ec_sage.aplist(pmax_more))
+        else:
+            avgs -= vector(ec_sage.aplist(pmax_more))
+    avgs /= len(isog_labels)
+
+    # Primes list and truncate to those < pmax
+    primes_all = list(prime_range(pmax_more + 1))
+    ap_vals = list(avgs)  # index-aligned with primes_all
+    primes_core = list(prime_range(pmax + 1))  # primes <= pmax
+
+    # Sliding window local average over [p, p + X^gamma] for each gamma in gammas
+    for gamma in gammas:
+        window_avgs = [0.0] * np
+        window_sum = 0.0
+        pmax_gamma = next_prime(int(X * y_max + X^gamma) + 1)
+        primes_all = list(prime_range(pmax_gamma + 1))
+        m = len(primes_all)
+        max_shift = X^gamma
+        right = 0
+        for i, p in enumerate(primes_core):
+            # Advance right pointer while prime within window
+            while right < m and primes_all[right] <= p + max_shift:
+                window_sum += ap_vals[right]
+                right += 1
+            # Remove left element (current p) after using it in average for this i, but
+            # first compute average over indices [i, right-1]
+            count = right - i
+            if count > 0:
+                window_avgs[i] = window_sum / count
+            else:
+                window_avgs[i] = 0.0  # fallback (should not occur)
+            # Slide window: subtract current p contribution before next i
+            window_sum -= ap_vals[i]
+
+        plt.subplots(figsize=(24, 6))
+        ys = [p / X for p in primes_core]
+
+        plt.scatter(ys, ap_vals[:np], color='green', label=f"without local avg", s=1)
+        plt.scatter(ys, window_avgs, color='purple', label=rf"with local avg ($\gamma$={float(gamma):.2f})", s=2.5)
+        plt.legend(loc='upper right')
+        plt.axhline(0, xmax=y_max, color='black', linewidth=1)
+        plt.savefig(f"./plots/ellcurve/local_avg_X={X}_ymax={y_max:.2f}_gamma={float(gamma):.2f}.png")
+        plt.close()
+
+
 if __name__ == "__main__":
     fig1()
     ec_murmuration_dyadic(2^12)
@@ -141,3 +208,8 @@ if __name__ == "__main__":
     ec_murmuration_dyadic(2^14)
     ec_murmuration_dyadic(2^15)
     ec_murmuration_dyadic(2^16)  # about 4 hours with a macbook
+    ec_with_local_avg(2^12, gammas=[1/5, 1/4, 1/3, 1/2])
+    ec_with_local_avg(2^13, gammas=[1/5, 1/4, 1/3, 1/2])
+    ec_with_local_avg(2^14, gammas=[1/5, 1/4, 1/3, 1/2])
+    ec_with_local_avg(2^15, gammas=[1/5, 1/4, 1/3, 1/2])
+    ec_with_local_avg(2^16, gammas=[1/5, 1/4, 1/3, 1/2])
