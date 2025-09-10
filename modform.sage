@@ -48,7 +48,9 @@ def dyadic_func(y):
         raise ValueError("Invalid input")
 
 
-def modform_avg(ps, X, c, k=2, sqfree=True):
+def modform_avg(ps, X, c, k=2, sqfree=True, with_root=True):
+    # If `with_root` is False, then we do not multiply root number
+    # but scale by \sqrt{N} instead (following Kimball Martin's computation)
     avgs_even = [0] * len(ps)
     avgs_odd = [0] * len(ps)
     avgs = [0] * len(ps)
@@ -60,24 +62,30 @@ def modform_avg(ps, X, c, k=2, sqfree=True):
             continue
         V = Newforms(N, k, names='a')
         for f in V:  # enumerate galois orbits of newforms
-            eps = QQ(f.atkin_lehner_eigenvalue()) * (-1)^(k/2)
             d = f.coefficient(1).parent().degree()
-            for i, p in enumerate(ps):
-                ap_tr = f.coefficient(p).trace()
-                avgs[i] += eps * ap_tr / p^(k/2 - 1)
-                if eps == 1:
-                    avgs_even[i] += ap_tr / p^(k/2 - 1)
-                    if i == 0:
-                        cnt_even += d
-                else:
-                    avgs_odd[i] += ap_tr / p^(k/2 - 1)
-                    if i == 0:
-                        cnt_odd += d
+            if not with_root:
+                for i, p in enumerate(ps):
+                    ap_tr = f.coefficient(p).trace()
+                    avgs[i] += float(sqrt(N)) * ap_tr / p^(k/2 - 1)
+            else:
+                eps = QQ(f.atkin_lehner_eigenvalue()) * (-1)^(k/2)
+                for i, p in enumerate(ps):
+                    ap_tr = f.coefficient(p).trace()
+                    avgs[i] += eps * ap_tr / p^(k/2 - 1)
+                    if eps == 1:
+                        avgs_even[i] += ap_tr / p^(k/2 - 1)
+                        if i == 0:
+                            cnt_even += d
+                    else:
+                        avgs_odd[i] += ap_tr / p^(k/2 - 1)
+                        if i == 0:
+                            cnt_odd += d
             cnt += d
     for i in range(len(ps)):
         avgs[i] /= cnt
-        avgs_even[i] /= cnt_even
-        avgs_odd[i] /= cnt_odd
+        if with_root:
+            avgs_even[i] /= cnt_even
+            avgs_odd[i] /= cnt_odd
     return avgs, avgs_even, avgs_odd
 
 
@@ -137,9 +145,26 @@ def fig4():
     plt.close()
 
 
+def martin_wo_root(k=2, X=2^8, c=2):
+    # Murmuration without root number weighting
+    print("Figure 3 and 4 of Kimball Martin's paper")
+    plt.subplots(figsize=(15, 2))
+    y_max = 4.0
+    ps = [p for p in prime_range(2, int(y_max * X))]
+    ys = [p / X for p in ps]
+    avgs, _, _ = modform_avg(ps, X, c, sqfree=True, with_root=False)
+    plt.scatter(ys, avgs, color='blue', s=1)
+    plt.axhline(0, xmax=y_max, color='black', linewidth=1)
+    plt.savefig(f"./plots/modform/martin_wo_root_k={k}_X={X}.png")
+    plt.close()
+
+
 if __name__ == "__main__":
     fig2(k=2, X=2^9, sqfree=False)  # X=2^10 may take more than 10hrs within a macbook
     fig3(k=2)
     fig3(k=8)
     fig3(k=24)
     fig4()
+    martin_wo_root(k=2, X=250)
+    martin_wo_root(k=2, X=500)
+    martin_wo_root(k=2, X=1000)
