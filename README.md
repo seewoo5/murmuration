@@ -52,6 +52,10 @@ The generated plots will be saved under the directory `plots/dirichlet`.
 
     - Reproduce Figure 2, 3, and 4.
 
+- Martin, "Distribution of local signs of modular forms and murmurations of Fourier coefficients"
+
+    - Reproduce Figure 3 and 4
+
 ```
 sage modform.sage
 ```
